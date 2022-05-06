@@ -1,29 +1,31 @@
 
-import { useState } from 'react';
 import { ITask } from '../../Interfaces';
 import './styles.css'
 
 interface TaskProps {
     task: ITask
-    deleteTask(DeleteTaskById: number): void,
-    fn: (id:number) => void
-
+    deleteTask(DeleteTaskById: string): void
+    setTodoList: React.Dispatch<React.SetStateAction<ITask[]>>
+    filter: ITask[]
+    todoList: ITask[]
 }
 
-function TodoTask({task, deleteTask, fn}: TaskProps) {
-    const [complete, setComplete] = useState<boolean>(false)
-    function completeHandler() {
-        setComplete(!complete);
-        setTimeout(() => {fn(task.id)}, 1000)
-    }
-	return (
-		<div className="card" style = {{backgroundColor: complete?"lightgreen":"white"}}>
+function TodoTask({task, deleteTask, setTodoList, filter, todoList}: TaskProps) {
+
+    function completeHandler(id : string) {
+        return setTodoList(todoList.map((tarefa) => {
+            if(tarefa.id === id)
+                tarefa.complete = !tarefa.complete
+                return tarefa
+        }))}
+            	return (
+		<div className="card" style = {{backgroundColor: task.complete?"lightgreen":"white"}}  >
 			<div>
                 <p>{task.nameTask}</p>
             </div>
             <div className="line2" >
-            <input id = "taskCheckBox" type="checkbox" onChange={() => completeHandler() }/>
-            <span className="btn-card" onClick={() => deleteTask(task.id)} style = {{backgroundColor: complete?"lightgreen":"white"}}>X</span>
+            <input id = "taskCheckBox" type="checkbox" onChange={() => completeHandler(task.id)}/>
+            <span className="btn-card" onClick={() => deleteTask(task.id)} style = {{backgroundColor: task.complete?"lightgreen":"white"}}>X</span>
             </div>
 		</div>
 	);
