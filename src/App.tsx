@@ -25,13 +25,10 @@ function App() {
 
 	}
 
-	//kd o css vai pra puta que pariu
-
-
 	function verPendentes () {
 					return setFilter(todoList.filter((tarefa: ITask) => tarefa.complete === false))
 				}
-  
+
 	function verFinalizadas () {
 					return setFilter(todoList.filter((tarefa: ITask) => tarefa.complete === true))
 				}
