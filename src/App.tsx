@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import TodoTask from "./components/TodoTask/TodoTask";
 import { ITask } from "./Interfaces";
-import { v4 as uuidv4} from "uuid";
 
 import './styles/styles.css'
+import axios from "axios";
 
 function App() {
 
@@ -12,18 +12,25 @@ function App() {
 
 	const [todoList, setTodoList] = useState<ITask[]>([])
 
+	useEffect(() => {
+		axios.get(`https://trainees-2022-todo-api-week-3.herokuapp.com/todos/`)
+		.then(resposta=> setTodoList(resposta.data))
+		.catch(()=> console.log('Nao gerou a array'))
+	}, [todoList]
+	)
+
 	const [filter, setFilter] = useState<ITask[]>(todoList)
 
     useEffect(() => setFilter(todoList), [todoList])
 
-	function addTask() {
-
-		const newTask = { id: uuidv4(), nameTask: task, complete: false}
-
-		setTodoList([...todoList, newTask])
-		setTask ("")
-
+	function addTask(title: String, description: String) {
+		axios.post(`https://trainees-2022-todo-api-week-3.herokuapp.com/todos`, {
+			title, description
+		})
+		.then(()=> console.log(' Task Adicionada!'))
+		.catch(()=> console.log('Erro ao adicionar a task!'))
 	}
+
 
 	function verPendentes () {
 					return setFilter(todoList.filter((tarefa: ITask) => tarefa.complete === false))
@@ -36,10 +43,11 @@ function App() {
 	 return setFilter(todoList)
 	}
 
-	function deleteTask(DeleteTaskById: string) {
-		setTodoList(todoList.filter((taskName) => taskName.id !== DeleteTaskById))
+	function DeleteTask(DeleteTaskById: string) {
+		axios.delete(`https://trainees-2022-todo-api-week-3.herokuapp.com/todos/${DeleteTaskById}`)
+		.then(() => {console.log('Deletado')})
+		.catch(() => {console.log('Erro inesperado!')})
 	}
-
 
 	return (
 		<div className="App">
@@ -58,7 +66,7 @@ function App() {
 					required
 				/>
 				<div className = "div-filters">
-				<button type="submit" className="btn-header" onClick={addTask}>Adicionar Tarefa</button>
+				<button type="submit" className="btn-header" onClick={()=>addTask(task, 'joao vsf')}>Adicionar Tarefa</button>
 
 				<button type="submit" className="filters" onClick={() => verFinalizadas()}>Apenas concluidas</button>
 
@@ -70,7 +78,7 @@ function App() {
 			<div className="line"></div>
 
 			{filter.map((task, key) => (
-			<TodoTask todoList={todoList} key={key} task = {task} deleteTask={deleteTask} setTodoList={setTodoList} filter={filter}/>
+			<TodoTask todoList={todoList} key={key} task = {task} deleteTask={DeleteTask} setTodoList={setTodoList} filter={filter}/>
 			))}
 		</div>
 	);
