@@ -21,7 +21,7 @@ function TodoTask({task, deleteTask, setTodoList, filter, todoList}: TaskProps) 
             	return (
 		<div className="card" style = {{backgroundColor: task.complete?"lightgreen":"white"}}  >
 			<div>
-                <p>{task.nameTask}</p>
+                <p>{task.description}</p>
             </div>
             <div className="line2" >
             <input id = "taskCheckBox" type="checkbox" onChange={() => completeHandler(task.id)}/>

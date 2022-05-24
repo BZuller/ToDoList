@@ -13,7 +13,7 @@ function App() {
 	const [todoList, setTodoList] = useState<ITask[]>([])
 
 	useEffect(() => {
-		axios.get(`https://trainees-2022-todo-api-week-3.herokuapp.com/todos/`)
+		axios.get(`http://localhost:3333/tasks`)
 		.then(resposta=> setTodoList(resposta.data))
 		.catch(()=> console.log('Nao gerou a array'))
 	}, [todoList]
@@ -23,11 +23,11 @@ function App() {
 
     useEffect(() => setFilter(todoList), [todoList])
 
-	function addTask(title: String, description: String) {
-		axios.post(`https://trainees-2022-todo-api-week-3.herokuapp.com/todos`, {
-			title, description
+	function addTask(name: String, description: String) {
+		axios.post(`http://localhost:3333/tasks`, {
+			name, description
 		})
-		.then(()=> console.log(' Task Adicionada!'))
+		.then((response)=> console.log(response))
 		.catch(()=> console.log('Erro ao adicionar a task!'))
 	}
 
@@ -44,7 +44,7 @@ function App() {
 	}
 
 	function DeleteTask(DeleteTaskById: string) {
-		axios.delete(`https://trainees-2022-todo-api-week-3.herokuapp.com/todos/${DeleteTaskById}`)
+		axios.delete(`http://localhost:3333/tasks/${DeleteTaskById}`)
 		.then(() => {console.log('Deletado')})
 		.catch(() => {console.log('Erro inesperado!')})
 	}
@@ -66,7 +66,7 @@ function App() {
 					required
 				/>
 				<div className = "div-filters">
-				<button type="submit" className="btn-header" onClick={()=>addTask(task, 'joao vsf')}>Adicionar Tarefa</button>
+				<button type="submit" className="btn-header" onClick={()=>addTask(task, task)}>Adicionar Tarefa</button>
 
 				<button type="submit" className="filters" onClick={() => verFinalizadas()}>Apenas concluidas</button>
 
