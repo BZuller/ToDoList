@@ -9,8 +9,7 @@ interface TaskProps {
     filter: ITask[]
     todoList: ITask[]
 }
-
-function TodoTask({task, deleteTask, setTodoList, filter, todoList}: TaskProps) {
+function TodoTask({task, deleteTask, setTodoList, todoList}: TaskProps) {
 
     function completeHandler(id : string) {
         return setTodoList(todoList.map((tarefa) => {
@@ -19,15 +18,15 @@ function TodoTask({task, deleteTask, setTodoList, filter, todoList}: TaskProps) 
                 return tarefa
         }))}
             	return (
-		<div className="card" style = {{backgroundColor: task.complete?"lightgreen":"white"}}  >
+	<div className="card" style = {{backgroundColor: task.complete?"lightgreen":"white"}}  >
 			<div>
                 <p>{task.nameTask}</p>
             </div>
-            <div className="line2" >
-            <input id = "taskCheckBox" type="checkbox" onChange={() => completeHandler(task.id)}/>
+        <div className="line2" >
+            <input id = "taskCheckBox" type="checkbox" defaultChecked = {task.complete} onChange={() => completeHandler(task.id)}/>
             <span className="btn-card" onClick={() => deleteTask(task.id)} style = {{backgroundColor: task.complete?"lightgreen":"white"}}>X</span>
-            </div>
-		</div>
+        </div>
+	</div>
 	);
 }
 

@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import TodoTask from "./components/TodoTask/TodoTask";
-import { ITask } from "./Interfaces";
+import TodoTask from "../components/TodoTask/TodoTask";
+import { ITask } from "../Interfaces";
 import { v4 as uuidv4} from "uuid";
 
-import './styles/styles.css'
+import '../styles/styles.css'
 
 function App() {
-
 
 	const [task, setTask] = useState<string>("")
 
@@ -70,7 +69,7 @@ function App() {
 			<div className="line"></div>
 
 			{filter.map((task, key) => (
-			<TodoTask todoList={todoList} key={key} task = {task} deleteTask={deleteTask} setTodoList={setTodoList} filter={filter}/>
+			<TodoTask todoList={todoList} key={task.id} task = {task} deleteTask={deleteTask} setTodoList={setTodoList} filter={filter}/>
 			))}
 		</div>
 	);
