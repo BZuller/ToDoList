@@ -1,17 +1,9 @@
 import { useEffect, useState } from "react";
-<<<<<<< HEAD:src/pages/Home.tsx
 import TodoTask from "../components/TodoTask/TodoTask";
 import { ITask } from "../Interfaces";
 import { v4 as uuidv4} from "uuid";
 
 import '../styles/styles.css'
-=======
-import TodoTask from "./components/TodoTask/TodoTask";
-import { ITask } from "./Interfaces";
-
-import './styles/styles.css'
-import axios from "axios";
->>>>>>> f779b0644f5e91b7e9124e61d01955f7347fb482:src/App.tsx
 
 function App() {
 
@@ -19,25 +11,18 @@ function App() {
 
 	const [todoList, setTodoList] = useState<ITask[]>([])
 
-	useEffect(() => {
-		axios.get(`http://localhost:3333/tasks`)
-		.then(resposta=> setTodoList(resposta.data))
-		.catch(()=> console.log('Nao gerou a array'))
-	}, [todoList]
-	)
-
 	const [filter, setFilter] = useState<ITask[]>(todoList)
 
     useEffect(() => setFilter(todoList), [todoList])
 
-	function addTask(name: String, description: String) {
-		axios.post(`http://localhost:3333/tasks`, {
-			name, description
-		})
-		.then((response)=> console.log(response))
-		.catch(()=> console.log('Erro ao adicionar a task!'))
-	}
+	function addTask() {
 
+		const newTask = { id: uuidv4(), nameTask: task, complete: false}
+
+		setTodoList([...todoList, newTask])
+		setTask ("")
+
+	}
 
 	function verPendentes () {
 					return setFilter(todoList.filter((tarefa: ITask) => tarefa.complete === false))
@@ -50,11 +35,10 @@ function App() {
 	 return setFilter(todoList)
 	}
 
-	function DeleteTask(DeleteTaskById: string) {
-		axios.delete(`http://localhost:3333/tasks/${DeleteTaskById}`)
-		.then(() => {console.log('Deletado')})
-		.catch(() => {console.log('Erro inesperado!')})
+	function deleteTask(DeleteTaskById: string) {
+		setTodoList(todoList.filter((taskName) => taskName.id !== DeleteTaskById))
 	}
+
 
 	return (
 		<div className="App">
@@ -73,7 +57,7 @@ function App() {
 					required
 				/>
 				<div className = "div-filters">
-				<button type="submit" className="btn-header" onClick={()=>addTask(task, task)}>Adicionar Tarefa</button>
+				<button type="submit" className="btn-header" onClick={addTask}>Adicionar Tarefa</button>
 
 				<button type="submit" className="filters" onClick={() => verFinalizadas()}>Apenas concluidas</button>
 
@@ -85,11 +69,7 @@ function App() {
 			<div className="line"></div>
 
 			{filter.map((task, key) => (
-<<<<<<< HEAD:src/pages/Home.tsx
 			<TodoTask todoList={todoList} key={task.id} task = {task} deleteTask={deleteTask} setTodoList={setTodoList} filter={filter}/>
-=======
-			<TodoTask todoList={todoList} key={key} task = {task} deleteTask={DeleteTask} setTodoList={setTodoList} filter={filter}/>
->>>>>>> f779b0644f5e91b7e9124e61d01955f7347fb482:src/App.tsx
 			))}
 		</div>
 	);
