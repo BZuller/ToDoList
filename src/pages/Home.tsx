@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import TodoTask from "../components/TodoTask/TodoTask";
 import { ITask } from "../Interfaces";
-import { v4 as uuidv4} from "uuid";
+import axios from "axios";
 
 import '../styles/styles.css'
 
@@ -13,15 +13,19 @@ function App() {
 
 	const [filter, setFilter] = useState<ITask[]>(todoList)
 
-    useEffect(() => setFilter(todoList), [todoList])
+	useEffect(() => {
+		axios.get(`http://localhost:3333/tasks`)
+		.then(resposta=> setTodoList(resposta.data))
+		.catch(()=> console.log('Nao gerou a array'))
+	}, [todoList]
+	)
 
-	function addTask() {
-
-		const newTask = { id: uuidv4(), nameTask: task, complete: false}
-
-		setTodoList([...todoList, newTask])
-		setTask ("")
-
+	function addTask(name: String) {
+		axios.post(`http://localhost:3333/tasks`, {
+			name
+		})
+		.then((response)=> console.log(response))
+		.catch(()=> console.log('Erro ao adicionar a task!'))
 	}
 
 	function verPendentes () {
@@ -34,9 +38,10 @@ function App() {
 	function verTodas(){
 	 return setFilter(todoList)
 	}
-
-	function deleteTask(DeleteTaskById: string) {
-		setTodoList(todoList.filter((taskName) => taskName.id !== DeleteTaskById))
+	function DeleteTask(DeleteTaskById: string) {
+		axios.delete(`http://localhost:3333/tasks/${DeleteTaskById}`)
+		.then(() => {console.log('Deletado')})
+		.catch(() => {console.log('Erro inesperado!')})
 	}
 
 
@@ -57,7 +62,7 @@ function App() {
 					required
 				/>
 				<div className = "div-filters">
-				<button type="submit" className="btn-header" onClick={addTask}>Adicionar Tarefa</button>
+				<button type="submit" className="btn-header" onClick={() => addTask(task)}>Adicionar Tarefa</button>
 
 				<button type="submit" className="filters" onClick={() => verFinalizadas()}>Apenas concluidas</button>
 
@@ -65,11 +70,17 @@ function App() {
 
 				<button type="submit" className="filters" onClick={() => verTodas()}>Mostrar todas</button>
 				</div>
-			</header>
+			</header>n
 			<div className="line"></div>
 
-			{filter.map((task, key) => (
-			<TodoTask todoList={todoList} key={task.id} task = {task} deleteTask={deleteTask} setTodoList={setTodoList} filter={filter}/>
+			{filter.map((task) => (
+			<TodoTask
+			todoList={todoList}
+			key={task.id}
+			task = {task}
+			deleteTask={DeleteTask}
+			setTodoList={setTodoList}
+			filter={filter}/>
 			))}
 		</div>
 	);

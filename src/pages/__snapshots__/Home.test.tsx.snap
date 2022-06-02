@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly when there are no tasks 1`] = `
+<div
+  className="App"
+>
+  <header>
+    <h2>
+      Lista de tarefas
+    </h2>
+    <input
+      autoComplete="off"
+      className="input"
+      name="task"
+      onChange={[Function]}
+      placeholder="Digite sua tarefa..."
+      required={true}
+      type="text"
+      value=""
+    />
+    <div
+      className="div-filters"
+    >
+      <button
+        className="btn-header"
+        onClick={[Function]}
+        type="submit"
+      >
+        Adicionar Tarefa
+      </button>
+      <button
+        className="filters"
+        onClick={[Function]}
+        type="submit"
+      >
+        Apenas concluidas
+      </button>
+      <button
+        className="filters"
+        onClick={[Function]}
+        type="submit"
+      >
+        Apenas pendentes
+      </button>
+      <button
+        className="filters"
+        onClick={[Function]}
+        type="submit"
+      >
+        Mostrar todas
+      </button>
+    </div>
+  </header>
+  n
+  <div
+    className="line"
+  />
+</div>
+`;
